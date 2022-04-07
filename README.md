@@ -134,3 +134,11 @@ Returns:
 ![VASP PBE vs MBJ potetntial](comparison81.png)
 
 More functionalities are present in the code, but the main ones are presented here. Take a look at WASPP05.py :).
+
+Package Requeriments:
+* numpy
+* matplotlib
+* scipy
+* itertools
+* re
+* pymatgen
