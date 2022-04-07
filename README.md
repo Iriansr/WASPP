@@ -3,8 +3,7 @@ Wannier &amp; vASP Postprocessing module
 
 ## Main functions:
 
-``` plot_pdos((file,_atoms = None,_orbitals = None,fig_size = (18,12),e_window = (-10,10)):
-```
+``` plot_pdos ```
 
 Main function for plotting the partial density of states, for desired atoms and orbitals at all the different Wyckoff positions. Usage is straightforward:
 
