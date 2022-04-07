@@ -16,8 +16,8 @@ If `_atoms` and `_orbitals` are `None`, the function will plot every atom and bi
 
 For example: 
 ```import WASPP_0.5 as wasp
-
-wasp.plot_dos("vasprun.xml",e_window = (-7.5,4))´´´
+wasp.plot_dos("vasprun.xml",e_window = (-7.5,4))
+```
 
 Returns:
 
