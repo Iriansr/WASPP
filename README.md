@@ -21,4 +21,4 @@ wasp.plot_dos("vasprun.xml",e_window = (-7.5,4))
 
 Returns:
 
-[TaSeI pDOS](TaSeI.png)
+![TaSeI pDOS](TaSeI.png)
