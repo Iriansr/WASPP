@@ -131,6 +131,6 @@ compare(vasprun_pbe = "vasprun81_rel.xml",
 
 Returns:
 
-![VASP PBE vs MBJ potetntial](comparison81.png).
+![VASP PBE vs MBJ potetntial](comparison81.png)
 
-And thats all for now folks.
+More functionalities are present in the code, but the main ones are presented here. Take a look at WASPP05.py :).
