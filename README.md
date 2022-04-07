@@ -131,3 +131,6 @@ compare(vasprun_pbe = "vasprun81_rel.xml",
 
 Returns:
 
+![VASP PBE vs MBJ potetntial](comparison81.png).
+
+And thats all for now folks.
