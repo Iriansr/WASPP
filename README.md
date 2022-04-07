@@ -1,5 +1,5 @@
 # WASPP module
-Wannier &amp; vASP Postprocessing module with functionalities I needed during my PhD. 
+**W**annier90 &amp; v**ASP** **P**ostprocessing module with functionalities I needed during my PhD. 
 
 **Being updated**
 Version: 0.5
