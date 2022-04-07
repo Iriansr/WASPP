@@ -1,5 +1,8 @@
 # WASPP module
-Wannier &amp; vASP Postprocessing module
+Wannier &amp; vASP Postprocessing module with functionalities I needed during my PhD. 
+
+**Being updated**
+Version: 0.5
 
 ## Main functions:
 ### Wannier90 - VASP interface preparation and evaluation.
@@ -98,4 +101,33 @@ Example (badly frozen e_win chosen in NbGe2):
 
 ### MBJ and PBE potentials bandstructure comparison.
 
+` compare_MBJ `
+
+Function for comparing PBE nscc and MBJ scc functional bandstructures using pymatgen treatment of vasprun. 
+
+```
+compare_MBJ(vasprun_pbe = "vasprun1.xml",
+            vasprun_mbj = "vasprun2.xml",
+            kpoint_file = "KPOINTS",
+            e_window = (-4,4),
+            fig_title = None,
+            fig_name = "comparison.png")
+```
+Usage:
+* `vasprun_pbe`: vasprun file for PBE nsc run.
+* `vasprun_mbj`: vasprun file for MBJ scc run.
+* `kpoint_file`: kpoint file for nsc (linemode expected).
+
+For example:
+
+```
+compare(vasprun_pbe = "vasprun81_rel.xml",
+            vasprun_mbj = "vasprun81.xml",
+            kpoint_file = "KPOINTS",
+            e_window = (-2,2),
+            fig_title = "SG81",
+            fig_name = "comparison81.png")
+```
+
+Returns:
 
