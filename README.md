@@ -9,6 +9,8 @@ Version: 0.5
 
 1. ``` plot_pdos ```
 
+For plotting pDOS select `LORBIT = 11` in `INCAR file
+
 Main function for plotting the partial density of states, for desired atoms and orbitals at all the different Wyckoff positions. Usage is straightforward:
 
 * `file = "vasprun.xml"` of your VASP run.
