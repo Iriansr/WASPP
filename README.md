@@ -21,8 +21,8 @@ Main function for plotting the partial density of states, for desired atoms and 
 If `_atoms` and `_orbitals` are `None`, the function will plot every atom and big orbital at every different Wyckoff position. For a better visualization each kind of big orbital is displayed with a different linestyle.
 
 For example (Ta6Se24I2): 
-```import WASPP_0.5 as wasp
-wasp.plot_dos("vasprun.xml",e_window = (-7.5,4))
+```import WASPP_0.5 as wap
+wap.plot_dos("vasprun.xml",e_window = (-7.5,4))
 ```
 
 Returns:
@@ -37,14 +37,14 @@ The first tag in the legend is the atom, the second is the Wyckoff position and 
 Counts the numebr of bands in a energy window in the whole FBZ. It gives a good clue of how to choose the energy window. Usage is as following:
 
 ``` 
-band_counter(file = "vasprun.xml", emin = 0.0, emax = 0.0)
+wap.band_counter(file = "vasprun.xml", emin = 0.0, emax = 0.0)
 ```
 * `file = "vasprun.xml"` of your VASP run.
 * `emin` and `emax` are the lower and upper part of the energy window given in reference to Fermi energy.
 
 For example:
-```import WASPP_0.5 as wasp
-wasp.band_counter(file = "vasprun.xml", emin = -7.0, emax = 4.0)
+```
+wap.band_counter(file = "vasprun.xml", emin = -7.0, emax = 4.0)
 ```
 Returns:
 ```
@@ -61,7 +61,7 @@ Function for plotting wannier bands from `.dat` and `.gnu` files.
 Usage:
 
 ```
-plot_wannierbands(file_dat = "wannier90_band.dat", gnu = "wannier90_band.gnu",efermi = 0.0, e_window = None, fig_size = (15,8),savename = "wannierbands.png")
+wap.plot_wannierbands(file_dat = "wannier90_band.dat", gnu = "wannier90_band.gnu",efermi = 0.0, e_window = None, fig_size = (15,8),savename = "wannierbands.png")
 ```
 * `file_dat`: `*_band.dat` output file from a wannier90.x run.
 * `file_dat`: `*_band.gnu` output file from a wannier90.x run.
@@ -74,7 +74,7 @@ It generates a `"wannierbands.png"` file.
 
 Function for plotting VASP bands from a non self-consistent calculation in a KPATH. Usage:
 
-`plot_vaspbands(outcar = "OUTCAR", kpoints = "KPOINTS")`
+`wap.plot_vaspbands(outcar = "OUTCAR", kpoints = "KPOINTS")`
 
 * `outcar`: OUTCAR file from VASP run.
 * `kpoints`: KPOINTS file from nsc VASP run (linemode expected).
@@ -84,7 +84,7 @@ Function for plotting VASP bands from a non self-consistent calculation in a KPA
 Function for comparing VASP and Wannier90 bandstructures combining the previous functions and tags. Usage:
 
 ``` 
-plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90_band.dat", gnu = "wannier90_band.gnu",efermi = 0.0, fig_size = (12,8), e_window = (-4,4),savename = "comparison.png"):
+wap.plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90_band.dat", gnu = "wannier90_band.gnu",efermi = 0.0, fig_size = (12,8), e_window = (-4,4),savename = "comparison.png"):
 ```
 
 * `outcar`: OUTCAR file from VASP run.
@@ -96,7 +96,7 @@ plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90_ban
 
 Example (badly frozen e_win chosen in NbGe2):
  ``` 
- plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90_band.dat", gnu = "plottt/wannier90_band.gnu",efermi = 0.0, fig_size = (12,8), e_window = (-4,4),savename = "comparison.png") 
+ wap.plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90_band.dat", gnu = "plottt/wannier90_band.gnu",efermi = 0.0, fig_size = (12,8), e_window = (-4,4),savename = "comparison.png") 
  ```
 
 ![NbGe2 VASP vs Wannier90](NbGe2.png)
@@ -108,7 +108,7 @@ Example (badly frozen e_win chosen in NbGe2):
 Function for comparing PBE nscc and MBJ scc functional bandstructures using pymatgen treatment of vasprun. 
 
 ```
-compare_MBJ(vasprun_pbe = "vasprun1.xml",
+wap.compare_MBJ(vasprun_pbe = "vasprun1.xml",
             vasprun_mbj = "vasprun2.xml",
             kpoint_file = "KPOINTS",
             e_window = (-4,4),
@@ -123,7 +123,7 @@ Usage:
 For example:
 
 ```
-compare(vasprun_pbe = "vasprun81_rel.xml",
+wap.compare(vasprun_pbe = "vasprun81_rel.xml",
             vasprun_mbj = "vasprun81.xml",
             kpoint_file = "KPOINTS",
             e_window = (-2,2),
