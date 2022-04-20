@@ -98,8 +98,43 @@ Example (badly frozen e_win chosen in NbGe2):
  ``` 
  wap.plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90_band.dat", gnu = "plottt/wannier90_band.gnu",efermi = 0.0, fig_size = (12,8), e_window = (-4,4),savename = "comparison.png") 
  ```
+ ![NbGe2 VASP vs Wannier90](NbGe2.png)
+ 
+6. `wann_kpoints`
 
-![NbGe2 VASP vs Wannier90](NbGe2.png)
+Function for generating kpath string for `seedname.win` using a `KPOINT` file from a nsc VASP calculation. Usage is as follows:
+```
+wann_kpoints(file = "KPOINTS")
+```
+Where `KPOINTS` is like:
+
+```
+Cubic
+20   ! 20 grids
+Line-mode
+reciprocal
+   0.000   0.000   0.000   ! GAMMA
+   0.000   0.500   0.000   ! X
+   0.000   0.500   0.000   ! X
+   0.500   0.500   0.000   ! M
+   0.500   0.500   0.000   ! M
+   0.000   0.000   0.000   ! GAMMA
+   0.000   0.000   0.000   ! GAMMA
+   0.500   0.500   0.500   ! R
+   0.500   0.500   0.500   ! R
+   0.000   0.500   0.000   ! X
+   0.500   0.500   0.000   ! M
+   0.500   0.500   0.500   ! R
+```
+And it generates a `WKPTS.txt` file as:
+```
+G 0.000 0.000 0.000 X 0.000 0.500 0.000 
+X 0.000 0.500 0.000 M 0.500 0.500 0.000 
+M 0.500 0.500 0.000 G 0.000 0.000 0.000 
+G 0.000 0.000 0.000 R 0.500 0.500 0.500 
+R 0.500 0.500 0.500 X 0.000 0.500 0.000 
+M 0.500 0.500 0.000 R 0.500 0.500 0.500 
+```
 
 ### MBJ and PBE potentials bandstructure comparison.
 
