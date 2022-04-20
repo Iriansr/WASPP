@@ -387,7 +387,7 @@ def kpath_name_parse(KPATH_STR):
 
     return kname
 
-def get_bandInfo(inFile='OUTCAR',kpointfile = "KPOINTS"):
+def get_bandInfo1(inFile='OUTCAR',kpointfile = "KPOINTS"):
 
     """
     extract band energies from OUTCAR
@@ -436,6 +436,89 @@ def get_bandInfo(inFile='OUTCAR',kpointfile = "KPOINTS"):
     bands = []
     # vkpts = []
     for line in outcar[LineEfermi+1:LineEfermi + N+1]:
+        if 'spin component' in line or 'band No.' in line:
+            continue
+        if 'k-point' in line:
+            # vkpts += [line.split()[3:]]
+            continue
+        bands.append(float(line.split()[1]))
+
+    bands = np.array(bands, dtype=float).reshape((ispin, nkpts, nband))
+
+
+    kp = open(kpointfile).readlines()
+
+    if kp[2][0].upper() == 'L':
+        Nk_in_seg = int(kp[1].split()[0])
+        Nseg = nkpts // Nk_in_seg
+        vkpt_diff = np.zeros_like(vkpts, dtype=float)
+
+        for ii in range(Nseg):
+            start = ii * Nk_in_seg
+            end = (ii + 1) * Nk_in_seg
+            vkpt_diff[start:end, :] = vkpts[start:end, :] - vkpts[start, :]
+
+        kpt_path = np.linalg.norm(np.dot(vkpt_diff, B), axis=1)
+        # kpt_path = np.sqrt(np.sum(np.dot(vkpt_diff, B)**2, axis=1))
+        for ii in range(1, Nseg):
+            start = ii * Nk_in_seg
+            end = (ii + 1) * Nk_in_seg
+            kpt_path[start:end] += kpt_path[start-1]
+
+        # kpt_path /= kpt_path[-1]
+        kpt_bounds = np.concatenate((kpt_path[0::Nk_in_seg], [kpt_path[-1], ]))
+
+    return kpt_path, bands, efermi, kpt_bounds, wkpts, nelect
+
+def get_bandInfo2(inFile='OUTCAR',kpointfile = "KPOINTS"):
+
+    """
+    extract band energies from OUTCAR
+    """
+
+    outcar = [line for line in open(inFile) if line.strip()]
+
+    for ii, line in enumerate(outcar):
+        if 'NKPTS =' in line:
+            nkpts = int(line.split()[3])
+            nband = int(line.split()[-1])
+
+        if 'ISPIN  =' in line:
+            ispin = int(line.split()[2])
+
+        if "k-points in reciprocal lattice and weights" in line:
+            Lvkpts = ii + 1
+
+        if 'reciprocal lattice vectors' in line:
+            ibasis = ii + 1
+
+        if 'E-fermi' in line:
+            efermi = float(line.split()[2])
+            LineEfermi = ii + 1
+            # break
+
+        if 'NELECT' in line:
+            nelect = float(line.split()[2])
+            # break
+
+    # basis vector of reciprocal lattice
+    # B = np.array([line.split()[3:] for line in outcar[ibasis:ibasis+3]],
+
+    # When the supercell is too large, spaces are missing between real space
+    # lattice constants. A bug found out by Wei Xie (weixie4@gmail.com).
+    B = np.array([line.split()[-3:] for line in outcar[ibasis:ibasis+3]],
+                 dtype=float)
+    # k-points vectors and weights
+    tmp = np.array([line.split() for line in outcar[Lvkpts:Lvkpts+nkpts]],
+                   dtype=float)
+    vkpts = tmp[:, :3]
+    wkpts = tmp[:, -1]
+
+    # for ispin = 2, there are two extra lines "spin component..."
+    N = (nband + 2) * nkpts * ispin + (ispin - 1) * 2
+    bands = []
+    # vkpts = []
+    for line in outcar[LineEfermi:LineEfermi + N]:
         if 'spin component' in line or 'band No.' in line:
             continue
         if 'k-point' in line:
@@ -560,7 +643,11 @@ def plot_vaspbands(outcar = "OUTCAR", kpoints = "KPOINTS"):
     # Use non-interactive backend in case there is no display
     mpl.use('agg')
     mpl.rcParams['axes.unicode_minus'] = False
-    kpath, bands, efermi, kpt_bounds, wkpts, nelect = get_bandInfo(outcar,kpoints)
+    try:    
+        kpath, bands, efermi, kpt_bounds, wkpts, nelect = get_bandInfo1(outcar,kpoints)
+    except IndexError:
+        kpath, bands, efermi, kpt_bounds, wkpts, nelect = get_bandInfo2(outcar,kpoints)
+
     bandplot(kpath,bands-efermi,efermi,kpt_bounds,nelect,kpointfile=kpoints)
     
 def plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90_band.dat", gnu = "wannier90_band.gnu",efermi = 0.0, fig_size = (12,8), e_window = (-4,4),savename = "comparison.png"):
@@ -569,8 +656,11 @@ def plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90
         in order to avoid problems with array sizes """
 
     # Get the info for VASP
-    kpath, bands, efermi, _, _, _ = get_bandInfo(outcar,kpoints)
-    
+    try:
+        kpath, bands, efermi, _, _, _ = get_bandInfo1(outcar,kpoints)
+    except IndexError:
+        kpath, bands, efermi, _, _, _ = get_bandInfo2(outcar,kpoints)
+        
     # We plot both bandstructures in the same axis and then using k-labels from gnu wannier file
     fig=plt.figure(figsize=fig_size)
     ax2=fig.add_subplot(111, label="Wannier")
