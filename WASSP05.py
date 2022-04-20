@@ -788,3 +788,26 @@ def compare_MBJ(vasprun_pbe = "vasprun1.xml",
     plt.savefig(fig_name,dpi = 500)
 
     plt.show()
+    
+    def wann_kpoints(file = "KPOINTS"):
+
+    """ Generates a kpoint path from a KPOINT file of VASP nsc calculation suitable for seedname.win"""
+
+    kpoints = [line for line in open(file) if line.strip() and line != ""][4::]
+    new_kpoints = []
+    temp_line = []
+    for ii, line in enumerate(kpoints):
+        if ii%2 == 0 and ii < len(kpoints)-1:
+            if line.split()[-1] == "GAMMA":
+                temp_line.append("G"+" "+" ".join(line.split()[0:3]))
+            else: temp_line.append(line.split()[-1]+" "+" ".join(line.split()[0:3]))
+            if kpoints[ii+1].split()[-1] == "GAMMA":
+                temp_line.append("G"+" "+" ".join(kpoints[ii+1].split()[0:3]))
+            else: temp_line.append(kpoints[ii+1].split()[-1]+" "+" ".join(kpoints[ii+1].split()[0:3]))
+            temp_line.append("\n")
+            new_kpoints.append(" ".join(temp_line))
+            temp_line = []
+
+    with open("WKPTS.txt","w") as f:
+        for line in new_kpoints:
+            f.write(line)
