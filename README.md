@@ -170,7 +170,7 @@ Returns:
 
 ![VASP PBE vs MBJ potetntial](comparison81.png)
 
-More functionalities are present in the code, but the main ones are presented here. Take a look at WASPP05.py :).
+More functionalities are present in the code and many more are coming, stay tuned & take a look at WASPP05.py （＾³＾）～♪.
 
 Package Requeriments:
 * numpy
