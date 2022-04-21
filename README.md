@@ -98,7 +98,7 @@ Example (badly frozen e_win chosen in NbGe2):
  ``` 
  wap.plot_comparison(outcar = "OUTCAR", kpoints = "KPOINTS",file_dat = "wannier90_band.dat", gnu = "plottt/wannier90_band.gnu",efermi = 0.0, fig_size = (12,8), e_window = (-4,4),savename = "comparison.png") 
  ```
- ![NbGe2 VASP vs Wannier90](NbGe2.png)
+ ![RhSi VASP vs Wannier90](RhSi.png)
  
 6. `wann_kpoints`
 
