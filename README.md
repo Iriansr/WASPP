@@ -138,7 +138,7 @@ M 0.500 0.500 0.000 R 0.500 0.500 0.500
 
 7. `plot_custom_vaspbands`
 
-Similar to plot_vaspbands but more customizable. Usage is as follows:
+Similar to `plot_vaspbands` but more customizable. Usage is as follows:
 
 ```
 wap.plot_custom_vaspbands(outcar = "OUTCAR",kpoints = "KPOINTS",figsize = (10,7.5),ewindow = (-3,3),dpi = 500,linewidth = 0.5,kp_i=None,kp_f=None,title=None,fname=None):
