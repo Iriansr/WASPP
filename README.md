@@ -141,7 +141,11 @@ M 0.500 0.500 0.000 R 0.500 0.500 0.500
 Similar to `plot_vaspbands` but more customizable. Usage is as follows:
 
 ```
-wap.plot_custom_vaspbands(outcar = "OUTCAR",kpoints = "KPOINTS",figsize = (10,7.5),ewindow = (-3,3),dpi = 500,linewidth = 0.5,kp_i=None,kp_f=None,title=None,fname=None):
+wap.plot_custom_vaspbands(outcar = "OUTCAR",kpoints = "KPOINTS",
+                          figsize = (10,7.5),ewindow = (-3,3),
+                          dpi = 500,linewidth = 0.5,
+                          kp_i=None,kp_f=None,
+                          title=None,fname=None)
 ```
 Where:
 * `kp_i` & `kp_f` is the number of the fist and last KPOINT in the path that you want to plot. E.g. in the `KPOINTS` file from above example `kp_i = 2` would correspond to `M`.
