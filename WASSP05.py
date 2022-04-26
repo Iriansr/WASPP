@@ -811,3 +811,99 @@ def compare_MBJ(vasprun_pbe = "vasprun1.xml",
     with open("WKPTS.txt","w") as f:
         for line in new_kpoints:
             f.write(line)
+
+def bandplot2(kpt_path, bands, efermi, kpt_bounds, nelect, W,L,ymin, ymax,dpi,linewidth,kp_i=None,kp_f=None,title=None,fname=None):                            # y limits
+
+    fig = plt.figure(figsize=(W,L))
+    ax = plt.subplot(111)
+    nspin, nkpts, nbands = bands.shape                # get spin, number of kpoints and number of bands.
+
+    if kp_i is not None and kp_f is not None:
+        km_i = np.where(kpt_path == kpt_bounds[kp_i])[0][0]
+        km_f = np.where(kpt_path == kpt_bounds[kp_f])[0][0]+1
+        if km_f >= len(kpt_path): km_f = km_f-1
+
+        ax.set_xlim(kpt_path[km_i],kpt_path[km_f])
+    else:
+        km_i = 0
+        km_f = len(kpt_path)-1
+        ax.set_xlim(kpt_path[km_i],kpt_path[km_f])
+
+    for Ispin in range(nspin):
+        for Iband in range(nbands):
+            lc = None if Iband == 0 else line.get_color()
+            if Iband >= nelect:
+                line, = ax.plot(kpt_path[km_i:km_f], bands[Ispin,:, Iband][km_i:km_f]-efermi, lw= linewidth, zorder=0,
+                            alpha=0.8,
+                            color='red',
+                            )
+            else:
+                line, = ax.plot(kpt_path[km_i:km_f], bands[Ispin, :, Iband][km_i:km_f]-efermi, lw= linewidth, zorder=0,
+                            alpha=0.8,
+                            color='blue',
+                            )
+
+    for bd in kpt_bounds:
+        ax.axvline(x=bd, ls='-', color='k', lw=0.5, alpha=0.5)
+
+    ax.set_ylabel('$E - E_f$ [eV]',fontsize='x-large',labelpad=5)
+    ax.set_ylim(ymin, ymax)
+
+
+
+    with open('KPOINTS','r') as KPointsFile:
+        TmpFlag = 0;
+        TmpLabels = [];
+        for TmpLine in KPointsFile:
+            TmpLine = TmpLine.strip()
+            if TmpFlag == 1:
+                TmpLine = re.sub(r'^.*\!\s?', '', TmpLine)
+                TmpLine.strip()
+                if TmpLine != "":
+                    if TmpLine == "G" or TmpLine == "Gamma" or TmpLine == "GAMMA":
+                        TmpLabels.append(r'$\mathrm{{\mathsf{\Gamma}}}$')
+                    else:
+                        TmpLabels.append(r'$\mathrm{\mathsf{'+TmpLine+'}}$')
+            if (TmpLine == "reciprocal") | (TmpLine == "rec"):
+                TmpFlag = 1
+        TmpLabels2 = [TmpLabels[0]]
+        TmpIndex = 1
+        while TmpIndex < (len(TmpLabels) - 1):
+            if TmpLabels[TmpIndex + 1] == TmpLabels[TmpIndex]:
+                TmpLabels2.append(TmpLabels[TmpIndex])
+            else:
+                TmpLabels2.append(TmpLabels[TmpIndex]+'|'+TmpLabels[TmpIndex + 1])
+            TmpIndex += 2
+        TmpLabels2.append(TmpLabels[len(TmpLabels) - 1])
+
+        if kp_i is not None and kp_f is not None:
+            ax.set_xlim(kpt_bounds[kp_i],kpt_bounds[kp_f])
+            if kp_f >= len(TmpLabels2):
+                ax.set_xticks(kpt_bounds[kp_i:kp_f])
+                ax.set_xticklabels(TmpLabels2[kp_i:kp_f],Fontsize= 12)
+            else:
+                ax.set_xticks(kpt_bounds[kp_i:kp_f+1])
+                ax.set_xticklabels(TmpLabels2[kp_i:kp_f+1],Fontsize= 12)
+        else:
+            ax.set_xticks(kpt_bounds)
+
+
+
+    ax.yaxis.set_minor_locator(mpl.ticker.AutoMinorLocator(2))
+    ax.axhline(y=0, xmax=1, linestyle='dotted', color='black', linewidth=0.5)
+    plt.tight_layout(pad=1.20)
+    if title != None:
+        plt.title(title)
+    plt.plot(dpi=dpi)
+    if fname != None:
+        plt.savefig(fname, dpi=dpi)
+
+def plot_custom_vaspbands(outcar = "OUTCAR",kpoints = "KPOINTS",figsize = (10,7.5),ewindow = (-3,3),dpi = 500,linewidth = 0.5,kp_i=None,kp_f=None,title=None,fname=None):
+
+    try:    
+        kpt_path, bands, Efermi, kpt_bounds, _ ,nelect = get_bandInfo1(outcar,kpoints)
+    except IndexError:
+        kpt_path, bands, Efermi, kpt_bounds, _, nelect = get_bandInfo2(outcar,kpoints)
+    
+    bandplot2(kpt_path, bands, Efermi, kpt_bounds, nelect, figsize[0],figsize[1],ewindow[0],ewindow[1],dpi,linewidth,kp_i,kp_f,title,fname)
+       
