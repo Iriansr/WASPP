@@ -151,6 +151,11 @@ Where:
 * `kp_i` & `kp_f` is the number of the fist and last KPOINT in the path that you want to plot. E.g. in the `KPOINTS` file from above example `kp_i = 2` would correspond to `M`.
 * `title` and `fname` are the title to be printed in the figure and the path to the figure when saved.
 
+8. `tb_to_hr`
+Generate a `seedname_hr.dat` from `seedname_tb.dat`. Usage is as follows:
+
+```wap.tb_to_hr(file = "wannier90_tb.dat")```
+
 ### MBJ and PBE potentials bandstructure comparison.
 
 ` compare_MBJ `
