@@ -906,4 +906,30 @@ def plot_custom_vaspbands(outcar = "OUTCAR",kpoints = "KPOINTS",figsize = (10,7.
         kpt_path, bands, Efermi, kpt_bounds, _, nelect = get_bandInfo2(outcar,kpoints)
     
     bandplot2(kpt_path, bands, Efermi, kpt_bounds, nelect, figsize[0],figsize[1],ewindow[0],ewindow[1],dpi,linewidth,kp_i,kp_f,title,fname)
+    
+def tb_to_hr(file = "wannier90_tb.dat"):
+    
+    """ Generates a seedname_hr.dat file from seedname_tb.dat
+        Intended to generate only _tb.dat and later using it for
+        WanierBerri & processing w/o restarting wannier90.x calc """
+    
+    import datetime as dt 
+    
+    seedname = file[0:-7]
+    file_tb = [line for line in open(file)]
+    num_wann = int(file_tb[4])
+    num_rpts = int(file_tb[5])
+
+    for (ii,line) in enumerate(file_tb):
+        if ii>1 and len(line.split()) == 3 and file_tb[ii-1] == '\n':
+            loc = ii
+            break
+
+    newfile = []; newfile.append("Generated at "+dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+" from "+seedname+"_tb.dat\n")
+    newfile = newfile + file_tb[4:loc+(num_wann**2+2)*num_rpts-1]
+    filename = seedname + "_hr.dat"
+    
+    with open(filename,"w") as f:
+        for line in newfile:
+            f.write(line) 
        
