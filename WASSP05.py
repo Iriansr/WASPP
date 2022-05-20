@@ -130,12 +130,15 @@ def plot_pdos(file,_atoms = None,_orbitals = None,fig_size = (18,12),e_window = 
     if _atoms != None:
         for (jj,atom) in enumerate(_atoms):
             if atom in atoms:
-                comp_atoms = list(np.where(np.asarray(atoms) == atom)[0])
+                comp_atoms.append(list(np.where(np.asarray(atoms) == atom)[0]))
     else: 
         _atoms = atoms
         for (jj,atom) in enumerate(_atoms):
             if atom in atoms:
-                comp_atoms = list(np.where(np.asarray(atoms) == atom)[0])
+                comp_atoms = list(np.where(np.asarray(atoms) == atom)[0])               
+    
+    comp_atoms = [j for i in comp_atoms for j in i]
+
     
     # Plot the small orbitals (aka: s,px,py,pz,dxy ...)
 
