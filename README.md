@@ -13,7 +13,7 @@ For plotting pDOS select `LORBIT = 11` in `INCAR` file
 
 Main function for plotting the partial density of states, for desired atoms and orbitals at all the different Wyckoff positions. Usage is straightforward:
 
-* `file = "vasprun.xml"` of your VASP run.
+* `file = "vasprun.xml"` of your VASP run, it has to contain `vasprun` in the name due to pymatgen handling of it.
 * `_atoms` = Atoms whose pDOS you wanna plot as a list of strings e.g. ["P","I","O","Rn","Al"].
 * `_orbitals` = Orbitals whose pDOS you wanna know from _atoms as a list of strings. They can be "big" orbitals (s,p,d,f) or "small" (px,py,pz,dxy,...), e.g ["s","px","d"].
 * `e_window` = Range of energies of interest.
