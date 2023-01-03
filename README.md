@@ -201,5 +201,5 @@ Package Requeriments:
 * re
 * pymatgen
 
-This code is heavily based in the one by Martín Gutierrez [@mgamigo]: https://github.com/mgamigo for QEspresso,
-[PyBand by Qijing Zheng & Chengcheng Xiao]:https://github.com/QijingZheng/pyband and uses [pymatgen]: https://github.com/materialsproject/pymatgen.
+This code is heavily based in the one by Martín Gutierrez [@mgamigo](https://github.com/mgamigo) for QEspresso,
+[PyBand by Qijing Zheng & Chengcheng Xiao](https://github.com/QijingZheng/pyband) and uses [pymatgen]( https://github.com/materialsproject/pymatgen).
